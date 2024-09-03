@@ -22,11 +22,11 @@ export default function ParticipationCard({
   return (
     <Card className="w-full md:w-[500px] bg-[#F8F9FD] pb-8">
       <CardHeader className="justify-between">
-        <div className="flex gap-5">
+        <div className="flex gap-5 w-full justify-center md:justify-start">
          <img src={logoUrl} alt="logo" className=" h-8 w-8"  />
         </div>
       </CardHeader>
-      <CardContent className="px-3 py-0">
+      <CardContent className="px-3 py-0 text-center md:text-left">
         <div className="font-bold text-lg">
           {headding}
         </div>
