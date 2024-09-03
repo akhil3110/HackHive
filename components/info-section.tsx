@@ -4,7 +4,7 @@ import { Separator } from './ui/separator'
 
 export default function InfoSection() {
   return (
-    <div className='h-full sm:h-[165px] w-full  bg-[#002A3B]' >
+    <div className='h-full sm:h-[165px] w-full  bg-[#002A3B] p-5' >
         <div className='flex w-full h-full justify-center items-center text-white'>
             <div className='mt-5 flex flex-col sm:flex-row sm:w-full justify-center gap-y-5  sm:justify-around'>
                 <div className='flex gap-x-2'>
