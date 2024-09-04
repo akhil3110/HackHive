@@ -26,7 +26,9 @@ import { CalendarIcon } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { UploadDropzone } from "@/lib/uploadthing";
-
+import axios from "axios";
+import { useRouter } from "next/navigation"
+import toast from "react-hot-toast"
 
 
 
@@ -47,13 +49,13 @@ const formSchema = z.object({
     levelType: z.string({
         required_error: "Level type is required"
     })
-}).refine(
-    (data) => data.endDate >= data.startDate,
-    {
-        path: ["endDate"],
-        message: "End date cannot be earlier than start date"
-    }
-)
+    }).refine(
+        (data) => data.endDate >= data.startDate,
+        {
+            path: ["endDate"],
+            message: "End date cannot be earlier than start date"
+        }
+    )
 
 const CreatePage = () => {
 
@@ -61,12 +63,21 @@ const CreatePage = () => {
         resolver: zodResolver(formSchema),
     })
 
+    const router = useRouter();
+
     const startDate = form.watch("startDate")
     const imageUrl = form.watch("imageUrl")
 
-    const onSubmit = (data: z.infer<typeof formSchema>) =>{
-        console.log(imageUrl, "adadad")
-        console.log(data)
+    const onSubmit =async (data: z.infer<typeof formSchema>) =>{
+        try {
+            console.log(data, "frontend")
+            const response = await axios.post('/api/challenge', data)
+            form.reset()
+            toast.success("Challenge Created")
+            router.push(`/challenge/${response.data.id}`)
+        } catch (error: any) {
+            console.log(error.message)
+        }
     }
     
 
@@ -236,9 +247,9 @@ const CreatePage = () => {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                <SelectItem value="easy">Easy</SelectItem>
-                                                <SelectItem value="medium">Medium</SelectItem>
-                                                <SelectItem value="hard">Hard</SelectItem>
+                                                <SelectItem value="Easy">Easy</SelectItem>
+                                                <SelectItem value="Medium">Medium</SelectItem>
+                                                <SelectItem value="Hard">Hard</SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />

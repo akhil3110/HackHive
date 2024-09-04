@@ -6,6 +6,7 @@ import Navbar from "@/components/navbar";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
+import { Toaster } from 'react-hot-toast';
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,6 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Toaster />
         <NextSSRPlugin  routerConfig={extractRouterConfig(ourFileRouter)}/>
         <div className="sticky top-0 z-50 w-full">
           <Navbar />

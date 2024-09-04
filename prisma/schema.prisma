@@ -14,4 +14,12 @@ datasource db {
 }
 
 
-
+model Challenges{
+  id String @id @default(cuid())
+  challengeName String
+  startDate DateTime
+  endDate DateTime
+  description String
+  imageUrl String?
+  levelType String
+}
