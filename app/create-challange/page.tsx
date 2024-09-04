@@ -29,6 +29,7 @@ import { UploadDropzone } from "@/lib/uploadthing";
 
 
 
+
 const formSchema = z.object({
     challengeName: z.string({
         required_error: "Challenge name is required"
@@ -245,7 +246,7 @@ const CreatePage = () => {
                                 )}
                             />
                             <div className=" pb-5">
-                                <Button className="bg-[#44924C]" type="submit" size="lg"> Create Challanges</Button>  
+                                <Button className="bg-[#44924C] hover:bg-[#28562c]" type="submit" size="lg"> Create Challanges</Button>  
                             </div>
                         </form>
                     </Form>
