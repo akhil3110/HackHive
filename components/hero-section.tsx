@@ -37,7 +37,7 @@ export default function HeroSection() {
                                     <div className='mt-10'>
                                         <Button
                                             onClick={() =>{
-                                                router.push("/create-challenge")
+                                                router.push("/create-challange")
                                             }}
                                             variant="secondary" 
                                             className=' font-bold' 
