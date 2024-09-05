@@ -19,7 +19,7 @@ export default function SearchResults({
     filteredChallenges
 }: SearchResultsTypes) {
 
-    if(!filteredChallenges){
+    if(filteredChallenges.length === 0){
         return (
             <div className='w-full h-[350px] bg-[#003145] text-white'>
                 <div className='h-full w-full flex justify-center items-center font-extrabold text-xl'>
