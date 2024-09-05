@@ -7,6 +7,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { CircleCheckBig } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 
 interface   ChallengeCardProps{
@@ -59,6 +60,7 @@ export default function ChallengeCard({
     imageUrl
 }: ChallengeCardProps) {
   const countdown = useCountdown(new Date(endDate).toDateString());
+  const router = useRouter()
 
   return (
     <Card className="w-full md:w-[350px] h-[500px] mx-auto shadow-lg">
@@ -92,7 +94,9 @@ export default function ChallengeCard({
       </CardContent>
 
       <CardFooter className="text-center w-full flex justify-center">
-        <Button className="bg-green-600 hover:bg-green-500 flex gap-x-1">
+        <Button onClick={()=>{
+            router.push(`/challenge/${id}`)
+        }} className="bg-green-600 hover:bg-green-500 flex gap-x-1">
           <CircleCheckBig className="h-5 w-5" /> Participate Now
         </Button>
       </CardFooter>
