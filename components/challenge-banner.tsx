@@ -1,11 +1,12 @@
 import { Clock9 } from 'lucide-react';
 import React from 'react'
 import { Button } from './ui/button';
+import { getFormatedDate } from '@/lib/formatDate';
 
 
 interface  ChallengeBannerType{
     ChallangeName: string;
-    startDate: Date;
+    startDate: string;
     level: string
 }
 
@@ -21,7 +22,7 @@ export default function ChallengeBanner({
                 <div className='flex flex-col gap-y-8'>
                     <div className='flex text-xs text-center md:text-left md:text-base gap-x-1 font-semibold bg-[#FFCE5C] p-2 rounded-md text-black' >
                         <Clock9 className='h-6 w-5 hidden sm:block' />
-                        Starts on {startDate.toDateString()} 09:00 PM (India Standard Time)
+                        Starts on {getFormatedDate(startDate)} 09:00 PM (India Standard Time)
                     </div>
                     <div className='text-2xl md:text-4xl font-extrabold'>
                         {ChallangeName}

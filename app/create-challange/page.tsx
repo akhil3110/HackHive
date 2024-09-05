@@ -73,6 +73,7 @@ const CreatePage = () => {
             const response = await axios.post('/api/challenge', data)
             form.reset()
             toast.success("Challenge Created")
+            router.refresh()
             router.push(`/challenge/${response.data.id}`)
         } catch (error: any) {
             console.log(error.message)
@@ -242,7 +243,7 @@ const CreatePage = () => {
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <FormControl>
                                                 <SelectTrigger className="w-52">
-                                                    <SelectValue placeholder="select Level Type" />
+                                                <SelectValue placeholder={field.value ? field.value : "select Level Type" } />
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
