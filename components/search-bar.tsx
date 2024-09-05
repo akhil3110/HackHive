@@ -54,13 +54,9 @@ export default function SearchBar() {
 
     function onSubmit(data: z.infer<typeof formSchema>) {
         //@ts-ignore
-        // Get the keys with a value of true from the data object
         const trueFilters = Object.entries(data)
             .filter(([key, value]) => value === true) // Filter for only true values
             .map(([key]) => key); // Map the keys to an array
-
-        console.log(trueFilters)
-        // Update the filters state with the new true values
         //@ts-ignore
         setFilters(trueFilters);
        
