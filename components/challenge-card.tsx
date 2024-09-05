@@ -61,7 +61,7 @@ export default function ChallengeCard({
   const countdown = useCountdown(new Date(endDate).toDateString());
 
   return (
-    <Card className="w-[350px] h-[500px] mx-auto shadow-lg">
+    <Card className="w-full md:w-[350px] h-[500px] mx-auto shadow-lg">
       <CardHeader className="p-0">
         <AspectRatio ratio={16 / 9}>
           <Image
