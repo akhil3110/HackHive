@@ -22,7 +22,7 @@ export default function SearchResults({
     <div className='w-full h-full bg-[#003145]'>
        <div className='h-full w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-10 gap-y-8'>
             {filteredChallenges.map((challenge) => (
-                <div className=' col-span-1'>
+                <div className='col-span-1' key={challenge.id}>
                    <ChallengeCard
                         id={challenge.id}
                         challengeName={challenge.challengeName}
