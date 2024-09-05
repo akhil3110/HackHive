@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from './ui/input'
 import { Cross, Search, X } from 'lucide-react'
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -22,6 +22,8 @@ import {
 import { Checkbox } from './ui/checkbox'
 import { Badge } from './ui/badge'
 import { Button } from './ui/button'
+import axios from 'axios'
+import SearchResults from './search-results'
 
 
 const formSchema = z.object({
@@ -38,6 +40,18 @@ const formSchema = z.object({
 export default function SearchBar() {
 
     const [filters,setFilters] = useState([])
+    const [challenges, setChallenges] = useState([]);
+    const [filteredChallenges, setFilteredChallenges] = useState([]);
+
+    useEffect(()=>{
+        const getChallenges = async () =>{
+            const response = await axios.get("/api/getAllData")
+            setChallenges(response.data)
+            setFilteredChallenges(response.data);
+        }
+        getChallenges()
+    },[])
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -52,24 +66,92 @@ export default function SearchBar() {
         },
     })
 
+  // Filter logic
+  function applyFilters(data: z.infer<typeof formSchema>) {
+    const currentDate = new Date();
+    const trueFilters = Object.entries(data)
+        .filter(([key, value]) => value === true)
+        .map(([key]) => key);
+
+    //@ts-ignore
+    setFilters(trueFilters);
+
+    const searchTerm = data.searchText?.toLowerCase() || '';
+
+    // Apply filters to the challenges array
+    const filtered = challenges.filter((challenge) => {
+        //@ts-ignore
+        const startDate = new Date(challenge.startDate);
+        //@ts-ignore
+        const endDate = new Date(challenge.endDate);
+        //@ts-ignore
+        const challengeName = challenge.challengeName.toLowerCase();
+        //@ts-ignore
+        const challengeDescription = challenge.description.toLowerCase();
+
+        // Filter by search term
+        if (
+            searchTerm &&
+            !challengeName.includes(searchTerm) &&
+            !challengeDescription.includes(searchTerm)
+        ) {
+            return false;
+        }
+
+        // Status Filters
+        let statusMatch = true;
+        if (data.Active && !(startDate <= currentDate && endDate >= currentDate)) {
+            statusMatch = false;
+        }
+        if (data.Upcoming && !(startDate > currentDate)) {
+            statusMatch = false;
+        }
+        if (data.Past && !(endDate < currentDate)) {
+            statusMatch = false;
+        }
+
+        // Difficulty Filters
+        let difficultyMatch = true;
+        //@ts-ignore
+        if (data.Easy && challenge.levelType!== "Easy") {
+            difficultyMatch = false;
+        }
+        //@ts-ignore
+        if (data.Medium && challenge.levelType!== "Medium") {
+            difficultyMatch = false;
+        }
+        //@ts-ignore
+        if (data.Hard && challenge.levelType!== "Hard") {
+            difficultyMatch = false;
+        }
+
+        // Return true if both status and difficulty filters match
+        return statusMatch && difficultyMatch;
+    });
+
+    setFilteredChallenges(filtered);
+}
+
+
     function onSubmit(data: z.infer<typeof formSchema>) {
-        //@ts-ignore
-        const trueFilters = Object.entries(data)
-            .filter(([key, value]) => value === true) // Filter for only true values
-            .map(([key]) => key); // Map the keys to an array
-        //@ts-ignore
-        setFilters(trueFilters);
+        applyFilters(data);
+        console.log(filteredChallenges)
        
     }
 
-    function removeFilter(tag: string) {
-        const updatedFilters = filters.filter(f => f !== tag)
+     function removeFilter(tag: string) {
+        const updatedFilters = filters.filter(f => f !== tag);
         form.setValue(tag as keyof z.infer<typeof formSchema>, false);
-        setFilters(updatedFilters)
+        setFilters(updatedFilters);
+
+
+        // Reapply filters after removing one
+        form.handleSubmit(onSubmit)();
     }
 
     return (
-        <div className="w-full h-[180px] md:h-[250px] bg-[#002A3B]">
+        <div className='w-full h-full'>
+        <div className="w-full h-[180px] md:h-[200px] bg-[#002A3B]">
             <div className="h-full w-full flex flex-col justify-center items-center">
                 <div className="text-xl md:text-3xl lg:text-5xl font-bold text-white mb-5 lg:mb-10">
                     Explore Challenges
@@ -291,6 +373,10 @@ export default function SearchBar() {
                     </div>                          
                 </div>
             </div>
+        </div>
+        <SearchResults
+            filteredChallenges={filteredChallenges}
+        />
         </div>
         
     )

@@ -7,9 +7,9 @@ export default function InfoSection() {
     <div className='h-full sm:h-[165px] w-full  bg-[#002A3B] p-5' >
         <div className='flex w-full h-full justify-center items-center text-white'>
             <div className='mt-5 flex flex-col sm:flex-row sm:w-full justify-center gap-y-5  sm:justify-around'>
-                <div className='flex gap-x-2'>
+                <div className='flex gap-x-3'>
                     <div>
-                        <img src='/AiCard.svg'  />
+                        <img src='/AiBanner.jpg' className=' rounded-xl h-[55px] w-[55px]'  />
                     </div>
                     <div className='flex flex-col'>
                         <div className=' font-bold  text-xl'>
