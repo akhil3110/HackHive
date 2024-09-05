@@ -1,7 +1,7 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import { Input } from './ui/input'
-import { Search } from 'lucide-react'
+import { Cross, Search, X } from 'lucide-react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -20,6 +20,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Checkbox } from './ui/checkbox'
+import { Badge } from './ui/badge'
+import { Button } from './ui/button'
+
 
 const formSchema = z.object({
     searchText:z.string(),
@@ -27,12 +30,14 @@ const formSchema = z.object({
     Active: z.boolean().default(false).optional(),
     Upcoming: z.boolean().default(false).optional(),
     Past: z.boolean().default(false).optional(),
-    easy: z.boolean().default(false).optional(),
-    medium: z.boolean().default(false).optional(),
-    hard: z.boolean().default(false).optional(),
+    Easy: z.boolean().default(false).optional(),
+    Medium: z.boolean().default(false).optional(),
+    Hard: z.boolean().default(false).optional(),
 })
 
 export default function SearchBar() {
+
+    const [filters,setFilters] = useState([])
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -41,14 +46,30 @@ export default function SearchBar() {
             Active: false,
             Upcoming: false,
             Past: false,
-            easy: false,
-            medium: false,
-            hard: false,
+            Easy: false,
+            Medium: false,
+            Hard: false,
         },
     })
 
     function onSubmit(data: z.infer<typeof formSchema>) {
-        // console.log(data)
+        //@ts-ignore
+        // Get the keys with a value of true from the data object
+        const trueFilters = Object.entries(data)
+            .filter(([key, value]) => value === true) // Filter for only true values
+            .map(([key]) => key); // Map the keys to an array
+
+        console.log(trueFilters)
+        // Update the filters state with the new true values
+        //@ts-ignore
+        setFilters(trueFilters);
+       
+    }
+
+    function removeFilter(tag: string) {
+        const updatedFilters = filters.filter(f => f !== tag)
+        form.setValue(tag as keyof z.infer<typeof formSchema>, false);
+        setFilters(updatedFilters)
     }
 
     return (
@@ -57,7 +78,7 @@ export default function SearchBar() {
                 <div className="text-xl md:text-3xl lg:text-5xl font-bold text-white mb-5 lg:mb-10">
                     Explore Challenges
                 </div>
-                
+                <div className=''>
                     <Form {...form}>
                         <form
                             className="space-y-6"
@@ -74,7 +95,7 @@ export default function SearchBar() {
                                                 <div>
                                                     <Search className="absolute w-8 h-8" />
                                                     <Input
-                                                        className="bg-white  md:w-[700px] pl-10"
+                                                        className="bg-white w-full md:w-[700px] pl-10"
                                                         placeholder="search"
                                                         value={field.value}
                                                         onChange={(e) =>{
@@ -185,7 +206,7 @@ export default function SearchBar() {
                                             </div>
                                             <FormField
                                                 control={form.control}
-                                                name="easy"
+                                                name="Easy"
                                                 render={({ field }) => (
                                                     <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                                         <FormControl>
@@ -205,7 +226,7 @@ export default function SearchBar() {
                                             />
                                             <FormField
                                                 control={form.control}
-                                                name="medium"
+                                                name="Medium"
                                                 render={({ field }) => (
                                                     <FormItem className="flex flex-row items-start space-x-3 space-y-0 ">
                                                         <FormControl>
@@ -225,7 +246,7 @@ export default function SearchBar() {
                                             />
                                             <FormField
                                                 control={form.control}
-                                                name="hard"
+                                                name="Hard"
                                                 render={({ field }) => (
                                                     <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                                         <FormControl>
@@ -251,7 +272,32 @@ export default function SearchBar() {
                         </form>
                     </Form>
                 </div>
+                <div className='hidden md:flex justify-center w-full h-10 mt-3'>
+                    <div className="w-[900px]  ">
+                        <div className='flex md:flex-row justify-start w-full gap-x-6'>
+                            {filters.map((filter) =>(
+                                <div key={filter} className=''>
+                                    <Badge className='text-white bg-[#7A8F9A] hover:bg-[#7A8F9A] cursor-pointer p-2 w-full rounded-3xl flex gap-x-1'>
+                                        {filter}
+                                        <Button 
+                                            variant="link" size="icon" 
+                                            className='h-full w-4 text-white hover:text-white'
+                                            onClick={() => {
+                                                removeFilter(filter)
+                                            }}
+                                        >
+                                            <X className='h-4 font-bold' />
+                                        </Button>
+                                    </Badge>
+                                </div>
+                            ))}
+                        </div>
+                    </div>                          
+                </div>
             </div>
+        </div>
         
     )
 }
+
+
