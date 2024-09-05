@@ -70,7 +70,6 @@ const CreatePage = () => {
 
     const onSubmit =async (data: z.infer<typeof formSchema>) =>{
         try {
-            console.log(data, "frontend")
             const response = await axios.post('/api/challenge', data)
             form.reset()
             toast.success("Challenge Created")

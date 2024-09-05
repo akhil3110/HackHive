@@ -48,7 +48,7 @@ export default function SearchBar() {
     })
 
     function onSubmit(data: z.infer<typeof formSchema>) {
-        console.log(data)
+        // console.log(data)
     }
 
     return (

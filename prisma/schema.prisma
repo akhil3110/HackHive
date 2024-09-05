@@ -23,3 +23,5 @@ model Challenges{
   imageUrl String?
   levelType String
 }
+
+
