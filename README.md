@@ -2,8 +2,20 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+Install all dependencies required for the project:
+```bash
+npm i
+```
 
+Now set up .env file 
+```bash
+cp .env.sample .env
+```
+
+Add all you the requires keys in .env file 
+
+
+Now project set up is completed now you can run the project
 ```bash
 npm run dev
 # or
@@ -12,7 +24,7 @@ yarn dev
 pnpm dev
 # or
 bun dev
-```
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
