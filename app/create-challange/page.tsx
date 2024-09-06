@@ -211,7 +211,20 @@ const CreatePage = () => {
                                     <FormItem>
                                         <FormLabel>Upload Image</FormLabel>
                                         {imageUrl ? (
-                                            <img src={imageUrl} className="w-[350px] h-[350ox] rounded-xl" />
+                                            <div className="bg-[#F8F9FD] w-full md:w-[400px] p-5 md:p-8">
+                                            <div>
+                                                <img src={imageUrl} className="w-[350px] h-[350ox] rounded-xl" />
+                                            </div>
+                                            <div
+                                                onClick={() =>{
+                                                    form.setValue("imageUrl","")
+                                                }} 
+                                                className="group mt-1 text-[#44924c] flex gap-x-1 cursor-pointer text-xs md:text-base"
+                                            >
+                                                <img src="/bi_image-fill.svg" className="w-3 h-3 md:w-4 md:h-4 mt-0 md:mt-1" />
+                                                <span className="group-hover:underline" >Change image</span>-&gt;
+                                            </div>
+                                        </div>
                                         ) : (
                                             <div>
                                                 <FormControl>
