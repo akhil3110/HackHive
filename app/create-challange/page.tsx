@@ -240,7 +240,7 @@ const CreatePage = () => {
                                                             console.error("Upload error:", err);
                                                         }}
                                                     />
-                                                 </FormControl>
+                                                </FormControl>
                                             </div>
                                         )}
                                         <FormMessage />

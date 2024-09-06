@@ -22,7 +22,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
+import { CalendarIcon, Cross, X } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { UploadDropzone } from "@/lib/uploadthing";
@@ -127,6 +127,8 @@ const ChallengeEdit = ( {params} : {params: {challengeId : string}}) => {
 
     const startDate = form.watch("startDate")
     let imageUrl = form.watch("imageUrl")
+    let iniatialImageUrl:string=""
+    const [initialImage,setIntialImage] = useState(form.getValues("imageUrl"))
 
     const onSubmit =async (data: z.infer<typeof formSchema>) =>{
         try {
@@ -273,12 +275,13 @@ const ChallengeEdit = ( {params} : {params: {challengeId : string}}) => {
                                     <FormItem>
                                         <FormLabel>Upload Image</FormLabel>
                                         {imageUrl ? (
-                                            <div className="bg-[#F8F9FD] w-full md:w-[400px] p-5 md:p-8">
+                                            <div className="bg-[#F8F9FD] w-full md:w-[400px]  p-5 md:p-8">
                                                 <div>
                                                     <img src={imageUrl} className="w-[350px] h-[350ox] rounded-xl" />
                                                 </div>
                                                 <div
                                                     onClick={() =>{
+                                                        setIntialImage(form.getValues("imageUrl"))
                                                         form.setValue("imageUrl","")
                                                     }} 
                                                     className="group mt-1 text-[#44924c] flex gap-x-1 cursor-pointer text-xs md:text-base"
@@ -303,6 +306,19 @@ const ChallengeEdit = ( {params} : {params: {challengeId : string}}) => {
                                                         }}
                                                     />
                                                  </FormControl>
+                                                 <div
+                                                    onClick={() =>{
+                                                       try {
+                                                        form.setValue("imageUrl", initialImage)
+                                                       } catch (error) {
+                                                        console.log(error)
+                                                       }
+                                                    }} 
+                                                    className="group text-[#44924c]group mt-1 text-[#44924c] flex gap-x-1 cursor-pointer text-base"
+                                                >
+                                                    <X className="w-4 md:h-4 mt-0 md:mt-1"/>
+                                                    <span className="group-hover:underline" >Cancel Edit</span>
+                                                 </div>
                                             </div>
                                         )}
                                         <FormMessage />
